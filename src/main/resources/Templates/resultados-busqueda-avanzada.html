@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de Búsqueda Avanzada</title>
+</head>
+<body>
+<h1>Resultados de Búsqueda Avanzada</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Ciudad</th>
+        <th>Zona</th>
+        <th>Precio por Noche</th>
+        <th>Disponible Desde</th>
+        <th>Disponible Hasta</th>
+        <th>Piscina</th>
+        <th>Wifi</th>
+        <th>Descripción</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="inmueble : ${inmuebles}">
+        <td th:text="${inmueble.ciudad}"></td>
+        <td th:text="${inmueble.zona}"></td>
+        <td th:text="${inmueble.precioPorNoche}"></td>
+        <td th:text="${inmueble.disponibleDesde}"></td>
+        <td th:text="${inmueble.disponibleHasta}"></td>
+        <td th:text="${inmueble.tienePiscina ? 'Sí' : 'No'}"></td>
+        <td th:text="${inmueble.tieneWifi ? 'Sí' : 'No'}"></td>
+        <td th:text="${inmueble.descripcion}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

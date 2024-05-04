@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Búsqueda Avanzada</title>
+</head>
+<body>
+<h1>Formulario de Búsqueda Avanzada</h1>
+<form th:action="@{/api/inmuebles/buscar-avanzada}" method="get">
+    <label for="ciudad">Ciudad:</label>
+    <input type="text" id="ciudad" name="ciudad">
+
+    <label for="zona">Zona:</label>
+    <input type="text" id="zona" name="zona">
+
+    <label for="precioMin">Precio Mínimo:</label>
+    <input type="number" id="precioMin" name="precioMin">
+
+    <label for="precioMax">Precio Máximo:</label>
+    <input type="number" id="precioMax" name="precioMax">
+
+    <label for="fechaInicio">Fecha de Disponibilidad Inicial:</label>
+    <input type="date" id="fechaInicio" name="fechaInicio">
+
+    <label for="fechaFin">Fecha de Disponibilidad Final:</label>
+    <input type="date" id="fechaFin" name="fechaFin">
+
+    <label for="tienePiscina">Tiene Piscina:</label>
+    <select id="tienePiscina" name="tienePiscina">
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+    </select>
+
+    <label for="tieneWifi">Tiene Wifi:</label>
+    <select id="tieneWifi" name="tieneWifi">
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+    </select>
+
+    <button type="submit">Buscar</button>
+</form>
+</body>
+</html>

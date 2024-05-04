@@ -5,9 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import java.time.LocalDate;
 
 @Entity
-public class Inmueble {
+public class BusquedaAvanzadaInmueble {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +25,20 @@ public class Inmueble {
     @Column(nullable = false)
     private int maxPersonas;
 
-    @Column(length = 1024) // Asumiendo descripciones largas
+    @Column(length = 1024) // Descripciones largas
     private String descripcion;
+
+    @Column
+    private LocalDate disponibleDesde;
+
+    @Column
+    private LocalDate disponibleHasta;
+
+    @Column
+    private boolean tienePiscina;
+
+    @Column
+    private boolean tieneWifi;
 
     // Getters y setters
 }
