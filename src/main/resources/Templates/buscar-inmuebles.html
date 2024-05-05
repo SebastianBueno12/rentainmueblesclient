@@ -13,8 +13,23 @@
     <label for="zona">Zona:</label>
     <input type="text" id="zona" name="zona" required>
 
+    <label for="fechaLlegada">Fecha de Llegada:</label>
+    <input type="date" id="fechaLlegada" name="fechaLlegada">
+
+    <label for="fechaSalida">Fecha de Salida:</label>
+    <input type="date" id="fechaSalida" name="fechaSalida">
+
+    <label for="numPersonas">Número de Personas:</label>
+    <input type="number" id="numPersonas" name="numPersonas">
+
     <button type="submit">Buscar</button>
 </form>
+
+<div>
+    <form th:action="@{/api/inmuebles/buscar-avanzada}" method="get">
+        <button type="submit">Búsqueda Avanzada</button>
+    </form>
+</div>
 
 <h2>Resultados:</h2>
 <table>

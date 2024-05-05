@@ -5,9 +5,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
-public class Inmueble {
+public class BusquedaInmueble {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,5 +32,11 @@ public class Inmueble {
     @Column(length = 1024) // Asumiendo descripciones largas
     private String descripcion;
 
-    // Getters y setters
+    @Column(nullable = false)
+    private LocalDate fechaDisponibleDesde;
+
+    @Column(nullable = false)
+    private LocalDate fechaDisponibleHasta;
+
+    // Getters y setters para todos los campos, incluyendo las nuevas fechas
 }
