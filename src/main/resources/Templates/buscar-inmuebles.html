@@ -18,19 +18,31 @@
             height: 150px;
             background-color: #ffffff;
         }
+        #advanced-search {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
     </style>
+    <script>
+        // Función para desplegar y ocultar los filtros avanzados
+        function toggleAdvancedSearch() {
+            var x = document.getElementById("advanced-search");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
 </head>
-
-<!-- Título de la página y formulario de búsqueda básica -->
-
 <body>
+<!-- Título de la página y formulario de búsqueda básica (CU01) -->
 <h1>Buscar Inmuebles</h1>
 <form th:action="@{/api/inmuebles/buscar}" method="get">
     <label for="ciudad">Ciudad:</label>
     <input type="text" id="ciudad" name="ciudad" required>
-
-    <label for="zona">Zona:</label>
-    <input type="text" id="zona" name="zona">
 
     <label for="fechaLlegada">Fecha de Llegada:</label>
     <input type="date" id="fechaLlegada" name="fechaLlegada">
@@ -38,19 +50,38 @@
     <label for="fechaSalida">Fecha de Salida:</label>
     <input type="date" id="fechaSalida" name="fechaSalida">
 
-    <label for="numPersonas">Número de Personas:</label>
+    <label for="numPersonas">Número total de Personas:</label>
     <input type="number" id="numPersonas" name="numPersonas">
 
+    <!-- Botón que activa los filtros avanzados (CU14) y botón de búsqueda básica -->
+    <button type="button" onclick="toggleAdvancedSearch()">Filtros Avanzados</button>
     <button type="submit">Buscar</button>
 </form>
-<!-- Botón para acceder a la búsqueda avanzada -->
-<div>
-    <form th:action="@{/api/inmuebles/buscar-avanzada}" method="get">
-        <button type="submit">Búsqueda Avanzada</button>
-    </form>
+
+<!-- Sección de búsqueda avanzada, oculta por defecto (CU14) -->
+<div id="advanced-search">
+    <label for="zona">Zona:</label>
+    <input type="text" id="zona" name="zona">
+
+    <label for="habitaciones">Número de Habitaciones:</label>
+    <input type="number" id="habitaciones" name="habitaciones">
+
+    <label for="banos">Número de Baños:</label>
+    <input type="number" id="banos" name="banos">
+
+    <label for="tienePiscina">¿Tiene Piscina?</label>
+    <select id="tienePiscina" name="tienePiscina">
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+    </select>
+
+    <label for="maxPersonasPorHabitacion">Máximo de Personas por Habitación:</label>
+    <input type="number" id="maxPersonasPorHabitacion" name="maxPersonasPorHabitacion">
+
+    <button type="submit">Aplicar Filtros</button>
 </div>
 
-<!-- Visualización de los resultados de la búsqueda -->
+<!-- Resultados de la búsqueda (CU01 y CU14) -->
 <h2>Resultados:</h2>
 <div th:each="inmueble : ${inmuebles}" class="inmueble-card">
     <div class="inmueble-img" th:style="'background-image:url(' + ${inmueble.imagenUrl} + ');'"></div>
