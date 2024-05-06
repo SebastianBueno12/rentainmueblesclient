@@ -27,6 +27,15 @@ public class BusquedaInmueble {
     @Column(name = "max_personas", nullable = false)
     private int maxPersonas; // Capacidad máxima de personas permitidas en el inmueble.
 
+    @Column(name = "habitaciones", nullable = false)
+    private int habitaciones; // Número de habitaciones en el inmueble.
+
+    @Column(name = "banos", nullable = false)
+    private int banos; // Número de baños en el inmueble.
+
+    @Column(name = "max_personas_por_habitacion", nullable = false)
+    private int maxPersonasPorHabitacion; // Máximo de personas permitidas por habitación.
+
     @Column(length = 1024, nullable = false)
     private String descripcion; // Descripción detallada del inmueble.
 
