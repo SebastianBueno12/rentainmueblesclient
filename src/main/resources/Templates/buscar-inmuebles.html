@@ -5,7 +5,7 @@
     <title>Buscar Inmuebles</title>
     <style>
         .inmueble-card {
-            border: 1px solid #ccc;
+            border: 1px solid #ffffff;
             border-radius: 5px;
             padding: 10px;
             margin: 10px;
@@ -78,6 +78,12 @@
     <label for="maxPersonasPorHabitacion">Máximo de Personas por Habitación:</label>
     <input type="number" id="maxPersonasPorHabitacion" name="maxPersonasPorHabitacion">
 
+    <label for="precioMinimo">Precio Mínimo por Noche:</label>
+    <input type="number" id="precioMinimo" name="precioMinimo">
+
+    <label for="precioMaximo">Precio Máximo por Noche:</label>
+    <input type="number" id="precioMaximo" name="precioMaximo">
+
     <button type="submit">Aplicar Filtros</button>
 </div>
 
@@ -86,8 +92,7 @@
 <div th:each="inmueble : ${inmuebles}" class="inmueble-card">
     <div class="inmueble-img" th:style="'background-image:url(' + ${inmueble.imagenUrl} + ');'"></div>
     <h3 th:text="${inmueble.nombre}">Nombre del Inmueble</h3>
-    <p th:text="${'Precio por noche: €' + inmueble.precioPorNoche}">Precio por Noche</p>
-    <p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
+    <p th:text="${'Precio por noche: €' + inmueble.precioPorNoche}">Precio por Noche</p><p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
 </div>
 
 </body>

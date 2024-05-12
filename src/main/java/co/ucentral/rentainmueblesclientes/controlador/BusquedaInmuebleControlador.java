@@ -49,7 +49,7 @@ public class BusquedaInmuebleControlador {
             BusquedaInmueble inmueble = servicio.obtenerDetalleInmueble(id);
             if (inmueble == null) {
                 model.addAttribute("message", "El inmueble solicitado no está disponible.");
-                return "error"; // Suponiendo que tienes una página de error general.
+                return "error";
             }
             model.addAttribute("inmueble", inmueble);
         } catch (Exception e) {
