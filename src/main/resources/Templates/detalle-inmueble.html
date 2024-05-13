@@ -33,6 +33,8 @@
     <p th:if="${!inmueble.tienePiscina}" th:text="'No tiene piscina'">No tiene piscina</p>
     <!-- Política de cancelación aplicable al inmueble -->
     <p th:text="${'Política de cancelación: ' + inmueble.politicaCancelacion}">Política de Cancelación</p>
+    <!-- Botón para realizar reserva -->
+    <button th:onclick="'window.location.href=\'/reservas/crear?idInmueble=' + ${inmueble.id} + '\''" class="reserva-button">Reservar Este Inmueble</button>
 </div>
 </body>
 </html>
