@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Reserva</title>
+    <style>
+        label, input, select {
+            display: block;
+            margin-top: 5px;
+        }
+        .submit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .inmueble-info {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Crear Reserva</h1>
+<!-- Formulario para la creación de reserva -->
+<form th:action="@{/reservas/crear}" method="post">
+    <!-- Detalles del inmueble seleccionado para la reserva -->
+    <div class="inmueble-info">
+        <img th:src="${inmueble.imagenUrl}" alt="Imagen del Inmueble" style="width:100%; max-width:300px;">
+        <h2 th:text="${inmueble.nombre}">Nombre del Inmueble</h2>
+        <p th:text="${'Ciudad: ' + inmueble.ciudad}">Ciudad</p>
+        <p th:text="${'Zona: ' + inmueble.zona}">Zona</p>
+        <p th:text="${'Precio por noche: €' + inmueble.precioPorNoche}">Precio por Noche</p>
+        <p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
+    </div>
+
+    <!-- Campo oculto para el ID del inmueble preseleccionado -->
+    <input type="hidden" th:value="${inmueble.id}" name="idInmueble"/>
+
+    <!-- Campos para la reserva -->
+    <label for="fechaLlegada">Fecha de Llegada:</label>
+    <input type="date" id="fechaLlegada" name="fechaLlegada" required>
+
+    <label for="fechaSalida">Fecha de Salida:</label>
+    <input type="date" id="fechaSalida" name="fechaSalida" required>
+
+    <label for="numeroPersonas">Número de Personas:</label>
+    <input type="number" id="numeroPersonas" name="numeroPersonas" required>
+
+    <!-- Checkbox para incluir el uso de piscina como servicio adicional -->
+    <label for="tienePiscina">¿Incluir uso de piscina? (Costo adicional)</label>
+    <input type="checkbox" id="tienePiscina" name="tienePiscina">
+
+    <!-- Botón para enviar el formulario -->
+    <button type="submit" class="submit-button">Realizar Reserva</button>
+</form>
+</body>
+</html>
