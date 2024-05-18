@@ -30,9 +30,6 @@ public class BusquedaInmueble {
     @Column(name = "habitaciones", nullable = false)
     private int habitaciones; // Número de habitaciones en el inmueble.
 
-    @Column(name = "banos", nullable = false)
-    private int banos; // Número de baños en el inmueble.
-
     @Column(name = "max_personas_por_habitacion", nullable = false)
     private int maxPersonasPorHabitacion; // Máximo de personas permitidas por habitación.
 
@@ -57,6 +54,4 @@ public class BusquedaInmueble {
     @Column(nullable = false)
     private String imagenUrl; // URL de la imagen representativa del inmueble.
 
-    @Column(nullable = false)
-    private String politicaCancelacion; // Política de cancelación aplicable.
 }

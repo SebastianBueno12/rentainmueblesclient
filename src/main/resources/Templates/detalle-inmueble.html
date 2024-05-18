@@ -31,8 +31,6 @@
     <!-- Condiciones adicionales como la piscina -->
     <p th:if="${inmueble.tienePiscina}" th:text="'Cuenta con piscina'">Cuenta con piscina</p>
     <p th:if="${!inmueble.tienePiscina}" th:text="'No tiene piscina'">No tiene piscina</p>
-    <!-- Política de cancelación aplicable al inmueble -->
-    <p th:text="${'Política de cancelación: ' + inmueble.politicaCancelacion}">Política de Cancelación</p>
 </div>
 </body>
 </html>
