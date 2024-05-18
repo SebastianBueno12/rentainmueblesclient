@@ -32,12 +32,6 @@ public class BusquedaInmueble {
     @Column(name = "habitaciones", nullable = false)
     private int habitaciones;
 
-    @Column(name = "banos", nullable = false)
-    private int banos;
-
-    @Column(name = "max_personas_por_habitacion", nullable = false)
-    private int maxPersonasPorHabitacion;
-
     @Column(length = 1024, nullable = false)
     private String descripcion;
 
@@ -59,6 +53,4 @@ public class BusquedaInmueble {
     @Column(nullable = false)
     private String imagenUrl; // Imagen representativa del inmueble.
 
-    @Column(nullable = false)
-    private String politicaCancelacion; // Política de cancelación aplicable.
 }
