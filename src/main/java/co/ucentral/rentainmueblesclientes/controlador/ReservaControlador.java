@@ -5,12 +5,13 @@ import co.ucentral.rentainmueblesclientes.modelo.BusquedaInmueble;
 import co.ucentral.rentainmueblesclientes.servicio.ReservaServicio;
 import co.ucentral.rentainmueblesclientes.servicio.BusquedaInmuebleServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/reservas")
@@ -22,7 +23,9 @@ public class ReservaControlador {
     @Autowired
     private BusquedaInmuebleServicio busquedaInmuebleServicio;
 
-    // Método GET para mostrar el formulario de creación de reserva
+    /**
+     * CU02: Muestra el formulario de creación de reserva para un inmueble específico.
+     */
     @GetMapping("/crear")
     public String mostrarFormularioDeCreacion(@RequestParam("idInmueble") Long idInmueble, Model model) {
         BusquedaInmueble inmueble = busquedaInmuebleServicio.obtenerDetalleInmueble(idInmueble);
@@ -34,11 +37,64 @@ public class ReservaControlador {
         return "crear-reserva"; // Retorna la vista del formulario de creación de reservas
     }
 
-    // Método POST para procesar la creación de una nueva reserva
+    /**
+     * CU02: Procesa la creación de una nueva reserva.
+     */
     @PostMapping("/crear")
-    public String crearReserva(Reserva reserva, Model model) {
-        Reserva nuevaReserva = reservaServicio.saveReserva(reserva); // Guarda la reserva en la base de datos
-        model.addAttribute("reserva", nuevaReserva); // Agrega la nueva reserva al modelo
-        return "detalle-reserva"; // Retorna la vista de detalle de la reserva, incluyendo confirmación y datos de la reserva
+    public String crearReserva(Reserva reserva, @RequestParam("idInmueble") Long idInmueble, Model model) {
+        BusquedaInmueble inmueble = busquedaInmuebleServicio.obtenerDetalleInmueble(idInmueble);
+        if (inmueble == null) {
+            model.addAttribute("error", "El inmueble no se encontró.");
+            return "crear-reserva";
+        }
+
+        reserva.setInmueble(inmueble);
+
+        // CU02: Verifica que el número de personas no exceda la capacidad máxima del inmueble
+        if (reserva.getNumeroPersonas() > inmueble.getMaxPersonas()) {
+            model.addAttribute("error", "El número de personas excede la capacidad máxima del inmueble.");
+            model.addAttribute("inmueble", inmueble);
+            model.addAttribute("reserva", reserva);
+            return "crear-reserva";
+        }
+
+        // CU02: Verifica que las fechas seleccionadas estén dentro del rango de disponibilidad del inmueble
+        if (!reserva.getFechaLlegada().isAfter(inmueble.getFechaDisponibleDesde().minusDays(1)) ||
+                !reserva.getFechaSalida().isBefore(inmueble.getFechaDisponibleHasta().plusDays(1))) {
+            model.addAttribute("error", "El inmueble no está disponible en las fechas seleccionadas.");
+            model.addAttribute("inmueble", inmueble);
+            model.addAttribute("reserva", reserva);
+            return "crear-reserva";
+        }
+
+        // CU02: Guarda la nueva reserva en la base de datos
+        Reserva nuevaReserva = reservaServicio.saveReserva(reserva);
+        model.addAttribute("reserva", nuevaReserva);
+        return "detalle-reserva"; // Retorna la vista de detalle de la reserva, mostrando confirmación y datos de la reserva
+    }
+
+    /**
+     * CU10: Verifica la disponibilidad de un inmueble para un rango de fechas específico
+     */
+    @GetMapping("/disponibilidad")
+    @ResponseBody
+    public ResponseEntity<Boolean> verificarDisponibilidad(@RequestParam("idInmueble") Long idInmueble,
+                                                           @RequestParam("fechaLlegada") LocalDate fechaLlegada,
+                                                           @RequestParam("fechaSalida") LocalDate fechaSalida) {
+        BusquedaInmueble inmueble = busquedaInmuebleServicio.obtenerDetalleInmueble(idInmueble);
+        if (inmueble == null) {
+            return ResponseEntity.ok(false); // Inmueble no encontrado, por lo tanto no disponible
+        }
+
+        // CU10: Verifica si las fechas están dentro del rango de disponibilidad del inmueble
+        if (!fechaLlegada.isAfter(inmueble.getFechaDisponibleDesde().minusDays(1)) ||
+                !fechaSalida.isBefore(inmueble.getFechaDisponibleHasta().plusDays(1))) {
+            return ResponseEntity.ok(false); // Fechas fuera del rango de disponibilidad del inmueble
+        }
+
+        // CU10: Verifica si hay reservas existentes que coincidan con las fechas seleccionadas
+        List<Reserva> reservas = reservaServicio.obtenerReservasPorInmuebleYFechas(idInmueble, fechaLlegada, fechaSalida);
+        boolean disponible = reservas.isEmpty();
+        return ResponseEntity.ok(disponible);
     }
 }

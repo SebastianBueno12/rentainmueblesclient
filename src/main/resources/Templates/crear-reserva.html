@@ -20,26 +20,30 @@
         .inmueble-info {
             margin-bottom: 20px;
         }
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
 <h1>Crear Reserva</h1>
-<!-- Formulario para la creación de reserva -->
-<form th:action="@{/reservas/crear}" method="post">
-    <!-- Detalles del inmueble seleccionado para la reserva -->
+<form th:action="@{/reservas/crear}" method="post" id="reserva-form">
     <div class="inmueble-info">
+        <!-- Información del inmueble que se muestra en el formulario -->
         <img th:src="${inmueble.imagenUrl}" alt="Imagen del Inmueble" style="width:100%; max-width:300px;">
         <h2 th:text="${inmueble.nombre}">Nombre del Inmueble</h2>
         <p th:text="${'Ciudad: ' + inmueble.ciudad}">Ciudad</p>
         <p th:text="${'Zona: ' + inmueble.zona}">Zona</p>
-        <p th:text="${'Precio por noche: €' + inmueble.precioPorNoche}">Precio por Noche</p>
+        <p th:text="${'Precio por noche: $' + inmueble.precioPorNoche}">Precio por Noche</p>
         <p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
     </div>
+    <!-- Campos ocultos para enviar datos adicionales del inmueble -->
+    <input type="hidden" th:value="${inmueble.id}" name="idInmueble" id="idInmueble"/>
+    <input type="hidden" th:value="${inmueble.maxPersonas}" id="maxPersonas"/>
+    <input type="hidden" th:value="${inmueble.precioPorNoche}" id="precioPorNoche"/>
+    <input type="hidden" th:value="${inmueble.costoAdicionalPiscina}" id="costoAdicionalPiscina"/>
 
-    <!-- Campo oculto para el ID del inmueble preseleccionado -->
-    <input type="hidden" th:value="${inmueble.id}" name="idInmueble"/>
-
-    <!-- Campos para la reserva -->
+    <!-- Campos de entrada para los detalles de la reserva -->
     <label for="fechaLlegada">Fecha de Llegada:</label>
     <input type="date" id="fechaLlegada" name="fechaLlegada" required>
 
@@ -49,12 +53,118 @@
     <label for="numeroPersonas">Número de Personas:</label>
     <input type="number" id="numeroPersonas" name="numeroPersonas" required>
 
-    <!-- Checkbox para incluir el uso de piscina como servicio adicional -->
     <label for="tienePiscina">¿Incluir uso de piscina? (Costo adicional)</label>
     <input type="checkbox" id="tienePiscina" name="tienePiscina">
 
+    <!-- Mensajes de error -->
+    <div class="error-message" id="errorMessage"></div>
+    <div class="error-message" id="disponibilidadErrorMessage"></div>
+
+    <!-- Costo total de la reserva -->
+    <p id="costoTotal">Costo Total: $0.00</p>
+
     <!-- Botón para enviar el formulario -->
-    <button type="submit" class="submit-button">Realizar Reserva</button>
+    <button type="submit" class="submit-button" id="submitBtn" disabled>Realizar Reserva</button>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fechaLlegada = document.getElementById('fechaLlegada');
+        const fechaSalida = document.getElementById('fechaSalida');
+        const numeroPersonas = document.getElementById('numeroPersonas');
+        const tienePiscina = document.getElementById('tienePiscina');
+        const costoTotal = document.getElementById('costoTotal');
+        const errorMessage = document.getElementById('errorMessage');
+        const disponibilidadErrorMessage = document.getElementById('disponibilidadErrorMessage');
+        const submitBtn = document.getElementById('submitBtn');
+
+        /**
+         * CU10: Verifica la disponibilidad del inmueble para las fechas seleccionadas.
+         */
+        async function verificarDisponibilidad() {
+            const idInmueble = document.getElementById('idInmueble').value;
+            const fechaLlegadaValue = fechaLlegada.value;
+            const fechaSalidaValue = fechaSalida.value;
+
+            // Si las fechas no están completas, limpia el mensaje de disponibilidad y desactiva el botón de envío
+            if (!fechaLlegadaValue || !fechaSalidaValue) {
+                disponibilidadErrorMessage.textContent = "";
+                submitBtn.disabled = true;
+                return;
+            }
+
+            // Realiza una solicitud al servidor para verificar la disponibilidad del inmueble
+            const response = await fetch(`/reservas/disponibilidad?idInmueble=${idInmueble}&fechaLlegada=${fechaLlegadaValue}&fechaSalida=${fechaSalidaValue}`);
+            const disponible = await response.json();
+
+            // Muestra un mensaje si el inmueble no está disponible y desactiva el botón de envío
+            if (!disponible) {
+                disponibilidadErrorMessage.textContent = "El inmueble no está disponible en las fechas seleccionadas.";
+                submitBtn.disabled = true;
+            } else {
+                disponibilidadErrorMessage.textContent = "";
+                submitBtn.disabled = false;
+            }
+        }
+
+        /**
+         * CU10: Calcula el costo total de la reserva basado en la duración de la estancia, el número de personas y servicios adicionales.
+         */
+        function calcularCosto() {
+            const precioPorNoche = parseFloat(document.getElementById('precioPorNoche').value);
+            const maxPersonas = parseInt(document.getElementById('maxPersonas').value);
+            const costoAdicionalPiscina = parseFloat(document.getElementById('costoAdicionalPiscina').value);
+
+            const fechaLlegadaValue = new Date(fechaLlegada.value);
+            const fechaSalidaValue = new Date(fechaSalida.value);
+            const numeroPersonasValue = parseInt(numeroPersonas.value);
+
+            // Si las fechas o el número de personas no son válidos, muestra un costo total de $0.00 y desactiva el botón de envío
+            if (isNaN(fechaLlegadaValue) || isNaN(fechaSalidaValue) || isNaN(numeroPersonasValue)) {
+                costoTotal.textContent = "Costo Total: $0.00";
+                errorMessage.textContent = "";
+                submitBtn.disabled = true;
+                return;
+            }
+
+            const diffTime = Math.abs(fechaSalidaValue - fechaLlegadaValue);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            // Verifica si el número de personas excede la capacidad máxima del inmueble
+            if (numeroPersonasValue > maxPersonas) {
+                errorMessage.textContent = `El número de personas excede la capacidad máxima del inmueble. Máximo permitido: ${maxPersonas}.`;
+                costoTotal.textContent = "Costo Total: $0.00";
+                submitBtn.disabled = true;
+                return;
+            } else {
+                errorMessage.textContent = "";
+            }
+
+            // Calcula el costo total basado en los días de estancia y el precio por noche
+            let costo = diffDays * precioPorNoche;
+
+            // Agrega el costo adicional por el uso de la piscina si se selecciona
+            if (tienePiscina.checked) {
+                costo += costoAdicionalPiscina; // Costo adicional por piscina
+            }
+
+            // Aplica un 10% adicional por servicios de administración de la plataforma
+            costo *= 1.10; // Aplicar 10% de servicios de administración de plataforma
+            costoTotal.textContent = `Costo Total: $${costo.toFixed(2)}`;
+        }
+
+        // Añade event listeners para recalcular el costo y verificar la disponibilidad cuando cambian las fechas o el número de personas
+        fechaLlegada.addEventListener('change', () => {
+            calcularCosto();
+            verificarDisponibilidad();
+        });
+        fechaSalida.addEventListener('change', () => {
+            calcularCosto();
+            verificarDisponibilidad();
+        });
+        numeroPersonas.addEventListener('input', calcularCosto);
+        tienePiscina.addEventListener('change', calcularCosto);
+    });
+</script>
 </body>
 </html>
