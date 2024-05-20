@@ -1,10 +1,13 @@
 package co.ucentral.rentainmueblesclientes.repositorios;
 
 
-import co.ucentral.rentainmueblesclientes.entidad.Cliente;
+
+
+import co.ucentral.rentainmueblesclientes.entidad.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClienteRepositorio extends JpaRepository<Cliente, Long> {
+public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
+    Usuario findByCorreo(String correo);
 }
