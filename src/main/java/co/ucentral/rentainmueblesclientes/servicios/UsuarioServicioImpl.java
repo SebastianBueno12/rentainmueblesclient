@@ -14,6 +14,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     private final UsuarioRepositorio usuarioRepositorio;
 
+
     @Autowired
     public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;

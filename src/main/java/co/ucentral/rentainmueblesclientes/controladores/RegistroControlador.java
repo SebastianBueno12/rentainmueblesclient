@@ -1,11 +1,24 @@
 package co.ucentral.rentainmueblesclientes.controladores;
 
+
+
+import co.ucentral.rentainmueblesclientes.entidad.Usuario;
+import co.ucentral.rentainmueblesclientes.servicios.UsuarioServicio;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RegistroControlador {
+
+    private final UsuarioServicio usuarioServicio;
+
+    @Autowired
+    public RegistroControlador(UsuarioServicio usuarioServicio) {
+        this.usuarioServicio = usuarioServicio;
+    }
 
     @GetMapping("/inicioSesion")
     public String iniciarSesion() {
@@ -13,8 +26,13 @@ public class RegistroControlador {
     }
 
     @PostMapping("/inicioSesion")
-    public String procesarInicioSesion() {
-        return "redirect:/index";
+    public String procesarInicioSesion(@RequestParam("username") String correo, @RequestParam("password") String contraseña) {
+        Usuario usuario = usuarioServicio.encontrarPorCorreo(correo);
+        if (usuario != null && usuario.getContraseña().equals(contraseña)) {
+            return "redirect:/index";
+        } else {
+            return "redirect:/inicioSesion?error";
+        }
     }
 
     @GetMapping("/index")
