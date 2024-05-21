@@ -1,6 +1,8 @@
 package co.ucentral.rentainmueblesclientes.servicios;
 
 
+
+
 import co.ucentral.rentainmueblesclientes.Dto.UsuarioRegistroDTO;
 import co.ucentral.rentainmueblesclientes.entidad.Usuario;
 import co.ucentral.rentainmueblesclientes.repositorios.UsuarioRepositorio;
@@ -14,7 +16,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     private final UsuarioRepositorio usuarioRepositorio;
 
-
     @Autowired
     public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
@@ -22,9 +23,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public Usuario guardar(UsuarioRegistroDTO registroDTO) {
-        Usuario usuario = new Usuario(registroDTO.getNombre(),
-                                        registroDTO.getCorreo(),
-                                        registroDTO.getContraseña());
+        Usuario usuario = new Usuario(
+                registroDTO.getNombre(),
+                registroDTO.getCorreo(),
+                registroDTO.getContraseña(),
+                registroDTO.getDireccion(),
+                registroDTO.getTelefono()
+        );
         return usuarioRepositorio.save(usuario);
     }
 
@@ -38,3 +43,4 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         return usuarioRepositorio.findAll();
     }
 }
+

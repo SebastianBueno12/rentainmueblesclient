@@ -1,23 +1,24 @@
 package co.ucentral.rentainmueblesclientes.Dto;
 
-
 public class UsuarioRegistroDTO {
 
     private String nombre;
     private String correo;
     private String contraseña;
-
+    private String direccion;
+    private String telefono;
 
     public UsuarioRegistroDTO() {}
 
-
-    public UsuarioRegistroDTO(String nombre, String correo, String contraseña) {
+    public UsuarioRegistroDTO(String nombre, String correo, String contraseña, String direccion, String telefono) {
         this.nombre = nombre;
         this.correo = correo;
         this.contraseña = contraseña;
+        this.direccion = direccion;
+        this.telefono = telefono;
     }
 
-
+    // Getters y setters
     public String getNombre() {
         return nombre;
     }
@@ -40,5 +41,21 @@ public class UsuarioRegistroDTO {
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 }

@@ -19,17 +19,24 @@ public class Usuario {
     @Column(name = "contraseña")
     private String contraseña;
 
+    @Column(name = "direccion")
+    private String direccion;
+
+    @Column(name = "telefono")
+    private String telefono;
+
     // Getters y setters
 
     public Usuario() {}
 
-    public Usuario(String nombre, String correo, String contraseña) {
+    public Usuario(String nombre, String correo, String contraseña, String direccion, String telefono) {
         this.nombre = nombre;
         this.correo = correo;
         this.contraseña = contraseña;
+        this.direccion = direccion;
+        this.telefono = telefono;
     }
 
-    // Getters y setters
     public Long getId() {
         return id;
     }
@@ -62,5 +69,19 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
+    public String getDireccion() {
+        return direccion;
+    }
 
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 }
