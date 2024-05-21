@@ -8,6 +8,15 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Servicio para gestionar las reservas de inmuebles.
+ *
+ * Esta clase es utilizada en:
+ * - CU02: Realización de reservas, donde se manejan las operaciones CRUD para las reservas.
+ * - CU10: Calcular costo total de reserva, donde se verifica la disponibilidad de un inmueble en un rango de fechas
+ *   y se asegura de que no haya conflictos con reservas existentes.
+ */
+
 @Service
 public class ReservaServicio {
 

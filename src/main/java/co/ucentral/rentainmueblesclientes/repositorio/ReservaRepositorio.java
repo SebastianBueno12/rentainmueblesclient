@@ -9,6 +9,14 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Repositorio para la entidad Reserva.
+ *
+ * Esta interfaz es utilizada en:
+ * - CU02: Realización de reservas, donde se manejan las operaciones CRUD para las reservas.
+ * - CU10: Calcular costo total de reserva, donde se verifica la disponibilidad de un inmueble en un rango de fechas
+ *   y se asegura de que no haya conflictos con reservas existentes.
+ */
 @Repository
 public interface ReservaRepositorio extends JpaRepository<Reserva, Long> {
 

@@ -3,6 +3,13 @@ package co.ucentral.rentainmueblesclientes.modelo;
 import lombok.Data;
 import jakarta.persistence.*;
 
+/**
+ * Clase que representa a un usuario del sistema.
+ *
+ * Esta clase es utilizada en:
+ * - CU08: Registrar usuario, donde se almacenan los detalles de los usuarios registrados en el sistema.
+ * - CU02: Realización de reservas, donde se asocia un usuario a una reserva específica.
+ */
 @Data
 @Entity
 @Table(name = "usuarios")

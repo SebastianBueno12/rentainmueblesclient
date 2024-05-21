@@ -4,9 +4,16 @@ import lombok.Data;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Clase que representa una reserva de un inmueble.
+ *
+ * Esta clase es utilizada en:
+ * - CU02: Realización de reservas, donde se almacenan los detalles de la reserva, como fechas, número de personas, servicios adicionales, y costo total.
+ * - CU021: Realización de pago seguro, donde se requiere actualizar el estado de la reserva después de un pago exitoso.
+ */
 @Data
 @Entity
-@Table(name = "reservas") //
+@Table(name = "reservas")
 public class Reserva {
     @Id // Marca el campo como la clave primaria de la entidad
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Configura la generación automática del valor del ID (autoincremental)
