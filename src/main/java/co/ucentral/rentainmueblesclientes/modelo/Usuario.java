@@ -25,6 +25,9 @@ public class Usuario {
     @Column(name = "telefono")
     private String telefono;
 
+    @Column(name = "token_recuperacion")
+    private String tokenRecuperacion;
+
     // Getters y setters
 
     public Usuario() {}
@@ -83,6 +86,14 @@ public class Usuario {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getTokenRecuperacion() {
+        return tokenRecuperacion;
+    }
+
+    public void setTokenRecuperacion(String tokenRecuperacion) {
+        this.tokenRecuperacion = tokenRecuperacion;
     }
 
 
