@@ -4,16 +4,16 @@ public class UsuarioRegistroDTO {
 
     private String nombre;
     private String correo;
-    private String contraseña;
+    private String clave;
     private String direccion;
     private String telefono;
 
     public UsuarioRegistroDTO() {}
 
-    public UsuarioRegistroDTO(String nombre, String correo, String contraseña, String direccion, String telefono) {
+    public UsuarioRegistroDTO(String nombre, String correo, String clave, String direccion, String telefono) {
         this.nombre = nombre;
         this.correo = correo;
-        this.contraseña = contraseña;
+        this.clave= clave;
         this.direccion = direccion;
         this.telefono = telefono;
     }
@@ -35,12 +35,12 @@ public class UsuarioRegistroDTO {
         this.correo = correo;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getClave() {
+        return clave;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
     public String getDireccion() {

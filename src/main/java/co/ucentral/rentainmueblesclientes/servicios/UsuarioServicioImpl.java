@@ -4,12 +4,12 @@ package co.ucentral.rentainmueblesclientes.servicios;
 
 
 import co.ucentral.rentainmueblesclientes.Dto.UsuarioRegistroDTO;
-import co.ucentral.rentainmueblesclientes.entidad.Usuario;
+import co.ucentral.rentainmueblesclientes.modelo.Usuario;
 import co.ucentral.rentainmueblesclientes.repositorios.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 
 @Service
 public class UsuarioServicioImpl implements UsuarioServicio {
@@ -26,7 +26,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         Usuario usuario = new Usuario(
                 registroDTO.getNombre(),
                 registroDTO.getCorreo(),
-                registroDTO.getContraseña(),
+                registroDTO.getClave(),
                 registroDTO.getDireccion(),
                 registroDTO.getTelefono()
         );
@@ -38,9 +38,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         return usuarioRepositorio.findByCorreo(correo);
     }
 
-    @Override
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepositorio.findAll();
-    }
+
 }
 

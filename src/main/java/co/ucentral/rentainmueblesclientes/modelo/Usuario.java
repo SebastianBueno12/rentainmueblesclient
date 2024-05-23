@@ -1,4 +1,4 @@
-package co.ucentral.rentainmueblesclientes.entidad;
+package co.ucentral.rentainmueblesclientes.modelo;
 
 import jakarta.persistence.*;
 
@@ -16,8 +16,8 @@ public class Usuario {
     @Column(name = "correo")
     private String correo;
 
-    @Column(name = "contraseña")
-    private String contraseña;
+    @Column(name = "clave")
+    private String clave;
 
     @Column(name = "direccion")
     private String direccion;
@@ -29,10 +29,10 @@ public class Usuario {
 
     public Usuario() {}
 
-    public Usuario(String nombre, String correo, String contraseña, String direccion, String telefono) {
+    public Usuario(String nombre, String correo, String clave, String direccion, String telefono) {
         this.nombre = nombre;
         this.correo = correo;
-        this.contraseña = contraseña;
+        this.clave = clave ;
         this.direccion = direccion;
         this.telefono = telefono;
     }
@@ -61,12 +61,12 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getClave() {
+        return clave;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
     public String getDireccion() {
@@ -84,4 +84,6 @@ public class Usuario {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+
 }

@@ -2,7 +2,7 @@ package co.ucentral.rentainmueblesclientes.controladores;
 
 
 
-import co.ucentral.rentainmueblesclientes.entidad.Usuario;
+import co.ucentral.rentainmueblesclientes.modelo.Usuario;
 import co.ucentral.rentainmueblesclientes.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,9 +26,9 @@ public class RegistroControlador {
     }
 
     @PostMapping("/inicioSesion")
-    public String procesarInicioSesion(@RequestParam("username") String correo, @RequestParam("password") String contraseña) {
+    public String procesarInicioSesion(@RequestParam("username") String correo, @RequestParam("password") String clave) {
         Usuario usuario = usuarioServicio.encontrarPorCorreo(correo);
-        if (usuario != null && usuario.getContraseña().equals(contraseña)) {
+        if (usuario != null && usuario.getClave().equals(clave)) {
             return "redirect:/index";
         } else {
             return "redirect:/inicioSesion?error";

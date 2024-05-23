@@ -3,7 +3,7 @@ package co.ucentral.rentainmueblesclientes.repositorios;
 
 
 
-import co.ucentral.rentainmueblesclientes.entidad.Usuario;
+import co.ucentral.rentainmueblesclientes.modelo.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
