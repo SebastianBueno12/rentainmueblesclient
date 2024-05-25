@@ -4,6 +4,11 @@
     <meta charset="utf-8">
     <title>Inicio de sesión</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .toggle-password {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -39,8 +44,14 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Clave:</label>
-                    <input id="password" name="password" type="password" class="form-control" required placeholder="Digite su clave">
+                    <div class="input-group">
+                        <input id="password" name="password" type="password" class="form-control" required placeholder="Digite su clave">
+                        <span class="input-group-addon toggle-password">
+                            <i class="glyphicon glyphicon-eye-open"></i>
+                        </span>
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
@@ -53,11 +64,23 @@
                 <span>Si eres nuevo usuario <a th:href="@{/registro}">regístrate aquí</a></span>
             </div>
             <div class="form-group">
-                <span>Si olvidaste tu contraseña dale <a th:href="@{/recuperarContrasena}">aquí</a></span>
+                <span><a th:href="@{/recuperarContrasena}">¿Olvidó su contraseña?</a></span>
             </div>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.toggle-password').mousedown(function() {
+            $('#password').attr('type', 'text');
+        }).mouseup(function() {
+            $('#password').attr('type', 'password');
+        }).mouseout(function() {
+            $('#password').attr('type', 'password');
+        });
+    });
+</script>
 </body>
 </html>
