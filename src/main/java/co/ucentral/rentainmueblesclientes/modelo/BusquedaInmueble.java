@@ -1,13 +1,17 @@
 package co.ucentral.rentainmueblesclientes.modelo;
 
 import lombok.Data;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Clase que representa un inmueble disponible para alquiler.
+ *
+ * Esta clase es utilizada en:
+ * - CU01: Búsqueda de inmuebles, proporcionando detalles necesarios para que los usuarios puedan filtrar y visualizar las opciones disponibles.
+ * - CU02: Realización de reservas, donde se requiere acceso a detalles completos del inmueble para verificar disponibilidad, calcular costos,
+ *   y proporcionar información detallada a los usuarios.
+ */
 @Data
 @Entity
 public class BusquedaInmueble {
@@ -22,36 +26,32 @@ public class BusquedaInmueble {
     private String zona;
 
     @Column(name = "precio_por_noche", nullable = false)
-    private double precioPorNoche; // Precio por noche del inmueble.
+    private double precioPorNoche; // Utilizado para calcular el costo total de la reserva.
 
     @Column(name = "max_personas", nullable = false)
-    private int maxPersonas; // Capacidad máxima de personas permitidas en el inmueble.
+    private int maxPersonas; // Capacidad máxima, crucial para validar la cantidad de huéspedes.
 
     @Column(name = "habitaciones", nullable = false)
-    private int habitaciones; // Número de habitaciones en el inmueble.
-
-    @Column(name = "max_personas_por_habitacion", nullable = false)
-    private int maxPersonasPorHabitacion; // Máximo de personas permitidas por habitación.
+    private int habitaciones;
 
     @Column(length = 1024, nullable = false)
-    private String descripcion; // Descripción detallada del inmueble.
+    private String descripcion;
 
     @Column(name = "fecha_disponible_desde", nullable = false)
-    private LocalDate fechaDisponibleDesde; // Fecha desde cuando el inmueble está disponible.
+    private LocalDate fechaDisponibleDesde; // Fechas disponibles para reservar el inmueble.
 
     @Column(name = "fecha_disponible_hasta", nullable = false)
-    private LocalDate fechaDisponibleHasta; // Fecha hasta cuando el inmueble está disponible.
+    private LocalDate fechaDisponibleHasta;
 
     @Column(name = "tiene_piscina", nullable = false)
-    private boolean tienePiscina; // Indica si el inmueble cuenta con piscina.
+    private boolean tienePiscina;
 
     @Column(name = "costo_adicional_piscina", nullable = true)
-    private Double costoAdicionalPiscina; // Costo adicional si el inmueble tiene piscina.
+    private Double costoAdicionalPiscina;
 
     @Column(nullable = false)
     private String nombre; // Nombre del inmueble.
 
     @Column(nullable = false)
-    private String imagenUrl; // URL de la imagen representativa del inmueble.
-
+    private String imagenUrl; // Imagen representativa del inmueble.
 }
