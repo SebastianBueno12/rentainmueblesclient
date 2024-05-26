@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Búsqueda Avanzada</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 80px;
+        }
+        .panel {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .submit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Mika Za</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+
+<div class="container">
+    <h1>Formulario de Búsqueda Avanzada</h1>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form th:action="@{/api/inmuebles/buscar-avanzada}" method="get">
+                <div class="form-group">
+                    <label for="ciudad">Ciudad:</label>
+                    <input type="text" class="form-control" id="ciudad" name="ciudad">
+                </div>
+
+                <div class="form-group">
+                    <label for="zona">Zona:</label>
+                    <input type="text" class="form-control" id="zona" name="zona">
+                </div>
+
+                <div class="form-group">
+                    <label for="precioMin">Precio Mínimo:</label>
+                    <input type="number" class="form-control" id="precioMin" name="precioMin">
+                </div>
+
+                <div class="form-group">
+                    <label for="precioMax">Precio Máximo:</label>
+                    <input type="number" class="form-control" id="precioMax" name="precioMax">
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaInicio">Fecha de Disponibilidad Inicial:</label>
+                    <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaFin">Fecha de Disponibilidad Final:</label>
+                    <input type="date" class="form-control" id="fechaFin" name="fechaFin">
+                </div>
+
+                <div class="form-group">
+                    <label for="tienePiscina">Tiene Piscina:</label>
+                    <select class="form-control" id="tienePiscina" name="tienePiscina">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tieneWifi">Tiene Wifi:</label>
+                    <select class="form-control" id="tieneWifi" name="tieneWifi">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-button btn btn-primary">Buscar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

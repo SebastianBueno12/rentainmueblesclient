@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Reserva</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 80px;
+        }
+        .submit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .inmueble-info img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        .panel {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+        }
+        label, input, select {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Mika Za</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<div class="container">
+    <h1>Crear Reserva</h1>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="inmueble-info">
+                <img th:src="${inmueble.imagenUrl}" alt="Imagen del Inmueble">
+                <h2 th:text="${inmueble.nombre}">Nombre del Inmueble</h2>
+                <p th:text="${'Ciudad: ' + inmueble.ciudad}">Ciudad</p>
+                <p th:text="${'Zona: ' + inmueble.zona}">Zona</p>
+                <p th:text="${'Precio por noche: €' + inmueble.precioPorNoche}">Precio por Noche</p>
+                <p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
+            </div>
+
+            <form th:action="@{/reservas/crear}" method="post" id="reserva-form">
+                <input type="hidden" th:value="${inmueble.id}" name="idInmueble" id="idInmueble"/>
+                <input type="hidden" th:value="${inmueble.maxPersonas}" id="maxPersonas"/>
+                <input type="hidden" th:value="${inmueble.precioPorNoche}" id="precioPorNoche"/>
+                <input type="hidden" th:value="${inmueble.costoAdicionalPiscina}" id="costoAdicionalPiscina"/>
+
+                <label for="fechaLlegada">Fecha de Llegada:</label>
+                <input type="date" id="fechaLlegada" name="fechaLlegada" required>
+
+                <label for="fechaSalida">Fecha de Salida:</label>
+                <input type="date" id="fechaSalida" name="fechaSalida" required>
+
+                <label for="numeroPersonas">Número de Personas:</label>
+                <input type="number" id="numeroPersonas" name="numeroPersonas" required>
+
+                <label for="tienePiscina">¿Incluir uso de piscina? (Costo adicional)</label>
+                <input type="checkbox" id="tienePiscina" name="tienePiscina">
+
+                <div class="error-message" id="errorMessage"></div>
+                <div class="error-message" id="disponibilidadErrorMessage"></div>
+
+                <p id="costoTotal">Costo Total: €0.00</p>
+
+                <button type="submit" class="submit-button" id="submitBtn" disabled>Realizar Reserva</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fechaLlegada = document.getElementById('fechaLlegada');
+        const fechaSalida = document.getElementById('fechaSalida');
+        const numeroPersonas = document.getElementById('numeroPersonas');
+        const tienePiscina = document.getElementById('tienePiscina');
+        const costoTotal = document.getElementById('costoTotal');
+        const errorMessage = document.getElementById('errorMessage');
+        const disponibilidadErrorMessage = document.getElementById('disponibilidadErrorMessage');
+        const submitBtn = document.getElementById('submitBtn');
+
+        async function verificarDisponibilidad() {
+            const idInmueble = document.getElementById('idInmueble').value;
+            const fechaLlegadaValue = fechaLlegada.value;
+            const fechaSalidaValue = fechaSalida.value;
+
+            if (!fechaLlegadaValue || !fechaSalidaValue) {
+                disponibilidadErrorMessage.textContent = "";
+                submitBtn.disabled = true;
+                return;
+            }
+
+            const response = await fetch(`/reservas/disponibilidad?idInmueble=${idInmueble}&fechaLlegada=${fechaLlegadaValue}&fechaSalida=${fechaSalidaValue}`);
+            const disponible = await response.json();
+
+            if (!disponible) {
+                disponibilidadErrorMessage.textContent = "El inmueble no está disponible en las fechas seleccionadas.";
+                submitBtn.disabled = true;
+            } else {
+                disponibilidadErrorMessage.textContent = "";
+                submitBtn.disabled = false;
+            }
+        }
+
+        function calcularCosto() {
+            const precioPorNoche = parseFloat(document.getElementById('precioPorNoche').value);
+            const maxPersonas = parseInt(document.getElementById('maxPersonas').value);
+            const costoAdicionalPiscina = parseFloat(document.getElementById('costoAdicionalPiscina').value);
+
+            const fechaLlegadaValue = new Date(fechaLlegada.value);
+            const fechaSalidaValue = new Date(fechaSalida.value);
+            const numeroPersonasValue = parseInt(numeroPersonas.value);
+
+            if (isNaN(fechaLlegadaValue) || isNaN(fechaSalidaValue) || isNaN(numeroPersonasValue)) {
+                costoTotal.textContent = "Costo Total: €0.00";
+                errorMessage.textContent = "";
+                submitBtn.disabled = true;
+                return;
+            }
+
+            const diffTime = Math.abs(fechaSalidaValue - fechaLlegadaValue);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (numeroPersonasValue > maxPersonas) {
+                errorMessage.textContent = `El número de personas excede la capacidad máxima del inmueble. Máximo permitido: ${maxPersonas}.`;
+                costoTotal.textContent = "Costo Total: €0.00";
+                submitBtn.disabled = true;
+                return;
+            } else {
+                errorMessage.textContent = "";
+            }
+
+            let costo = diffDays * precioPorNoche;
+
+            if (tienePiscina.checked) {
+                costo += costoAdicionalPiscina;
+            }
+
+            costo *= 1.10;
+            costoTotal.textContent = `Costo Total: €${costo.toFixed(2)}`;
+        }
+
+        fechaLlegada.addEventListener('change', () => {
+            calcularCosto();
+            verificarDisponibilidad();
+        });
+        fechaSalida.addEventListener('change', () => {
+            calcularCosto();
+            verificarDisponibilidad();
+        });
+        numeroPersonas.addEventListener('input', calcularCosto);
+        tienePiscina.addEventListener('change', calcularCosto);
+    });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Inmueble</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 80px;
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        .info-section img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 5px;
+        }
+        .info-section h2 {
+            margin-top: 0;
+        }
+        .panel {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Mika Za</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<div class="container">
+    <h1>Detalle del Inmueble</h1>
+    <div class="panel panel-default info-section">
+        <div class="panel-body">
+            <h2 th:text="${inmueble.nombre}">Nombre del Inmueble</h2>
+            <img th:src="${inmueble.imagenUrl}" alt="Imagen del Inmueble">
+            <p th:text="${inmueble.descripcion}">Descripción</p>
+            <p><strong>Ciudad:</strong> <span th:text="${inmueble.ciudad}">Ciudad</span></p>
+            <p><strong>Zona:</strong> <span th:text="${inmueble.zona}">Zona</span></p>
+            <p><strong>Precio por noche:</strong> <span th:text="'€' + ${inmueble.precioPorNoche}">Precio por Noche</span></p>
+            <p><strong>Máximo de personas:</strong> <span th:text="${inmueble.maxPersonas}">Máximo de Personas</span></p>
+            <p><strong>Disponible desde:</strong> <span th:text="${inmueble.fechaDisponibleDesde}">Fecha Disponible Desde</span></p>
+            <p><strong>Disponible hasta:</strong> <span th:text="${inmueble.fechaDisponibleHasta}">Fecha Disponible Hasta</span></p>
+            <p th:if="${inmueble.tienePiscina}"><strong>Condiciones:</strong> Cuenta con piscina</p>
+            <p th:if="${!inmueble.tienePiscina}"><strong>Condiciones:</strong> No tiene piscina</p>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

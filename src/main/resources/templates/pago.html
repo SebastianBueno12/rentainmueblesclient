@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Realizar Pago Seguro</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 80px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .submit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Mika Za</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+
+<div class="container">
+    <h1>Realizar Pago Seguro</h1>
+    <form th:action="@{/pagos/procesar}" method="post" id="pago-form" class="form-horizontal">
+        <div class="form-group">
+            <label for="nombreTarjeta" class="col-sm-2 control-label">Nombre en la Tarjeta:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="nombreTarjeta" name="nombreTarjeta" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="numeroTarjeta" class="col-sm-2 control-label">Número de la Tarjeta:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" maxlength="16" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="fechaExpiracion" class="col-sm-2 control-label">Fecha de Expiración:</label>
+            <div class="col-sm-10">
+                <input type="month" class="form-control" id="fechaExpiracion" name="fechaExpiracion" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="codigoSeguridad" class="col-sm-2 control-label">Código de Seguridad:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="codigoSeguridad" name="codigoSeguridad" maxlength="3" required>
+            </div>
+        </div>
+
+        <input type="hidden" th:value="${reserva.idReserva}" name="idReserva">
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="submit-button" onclick="validarFormulario()">Realizar Pago</button>
+            </div>
+        </div>
+    </form>
+    <div class="error-message" id="errorMessage"></div>
+</div>
+
+<script>
+    function validarFormulario() {
+        const numeroTarjeta = document.getElementById('numeroTarjeta').value;
+        const fechaExpiracion = document.getElementById('fechaExpiracion').value;
+        const codigoSeguridad = document.getElementById('codigoSeguridad').value;
+        const errorMessage = document.getElementById('errorMessage');
+
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1; // Los meses en JavaScript son de 0 a 11
+
+        // Validar número de tarjeta (16 dígitos)
+        if (numeroTarjeta.length !== 16 || !/^\d+$/.test(numeroTarjeta)) {
+            errorMessage.textContent = 'El número de tarjeta debe tener 16 dígitos.';
+            return;
+        }
+
+        // Validar fecha de expiración (no antes del mes y año actual)
+        const [year, month] = fechaExpiracion.split('-').map(Number);
+        if (year < currentYear || (year === currentYear && month < currentMonth)) {
+            errorMessage.textContent = 'La fecha de expiración debe ser igual o posterior al mes y año actual.';
+            return;
+        }
+
+        // Validar código de seguridad (3 dígitos)
+        if (codigoSeguridad.length !== 3 || !/^\d+$/.test(codigoSeguridad)) {
+            errorMessage.textContent = 'El código de seguridad debe tener 3 dígitos.';
+            return;
+        }
+
+        // Si todas las validaciones pasan, enviar el formulario
+        errorMessage.textContent = '';
+        document.getElementById('pago-form').submit();
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

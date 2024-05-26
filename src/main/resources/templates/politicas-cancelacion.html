@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Políticas de Cancelación</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 80px;
+        }
+        .policy-container {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        ul {
+            margin-top: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Mika Za</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+
+<div class="container">
+    <h1>Políticas de Cancelación</h1>
+    <div class="policy-container">
+        <p>Comprender las políticas de cancelación es crucial antes de realizar una reserva. Aquí están los detalles de nuestras políticas:</p>
+        <ul>
+            <li><strong>Más de 24 horas de antelación:</strong> Si cancelas tu reserva más de 24 horas antes de la fecha de llegada, recibirás un reembolso del 100%.</li>
+            <li><strong>Dentro de las 24 horas:</strong> Las cancelaciones hechas dentro de las 24 horas previas a la fecha de llegada resultarán en un reembolso del 80%.</li>
+            <li><strong>En la fecha de ingreso:</strong> Cancelar en la fecha de ingreso al inmueble conlleva a un reembolso del 60%.</li>
+        </ul>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Inmuebles</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .inmueble-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            display: inline-block;
+            width: calc(25% - 40px);
+            vertical-align: top;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .inmueble-img {
+            width: 100%;
+            height: 150px;
+            background-color: #f9f9f9;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px;
+        }
+        #advanced-search {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            margin-top: 80px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+    <script>
+        function toggleAdvancedSearch() {
+            var x = document.getElementById("advanced-search");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Mika Za</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+
+<div class="container">
+    <h1>Buscar Inmuebles</h1>
+    <form th:action="@{/api/inmuebles/buscar}" method="get" class="form-horizontal">
+        <div class="form-group">
+            <label for="ciudad" class="col-sm-2 control-label">Ciudad:</label>
+            <div class="col-sm-10">
+                <input type="text" id="ciudad" name="ciudad" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="fechaLlegada" class="col-sm-2 control-label">Fecha de Llegada:</label>
+            <div class="col-sm-4">
+                <input type="date" id="fechaLlegada" name="fechaLlegada" class="form-control">
+            </div>
+            <label for="fechaSalida" class="col-sm-2 control-label">Fecha de Salida:</label>
+            <div class="col-sm-4">
+                <input type="date" id="fechaSalida" name="fechaSalida" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="numPersonas" class="col-sm-2 control-label">Número total de Personas:</label>
+            <div class="col-sm-10">
+                <input type="number" id="numPersonas" name="numPersonas" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" onclick="toggleAdvancedSearch()">Filtros Avanzados</button>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+        <div id="advanced-search" class="form-group">
+            <label for="zona" class="col-sm-2 control-label">Zona:</label>
+            <div class="col-sm-4">
+                <input type="text" id="zona" name="zona" class="form-control">
+            </div>
+            <label for="habitaciones" class="col-sm-2 control-label">Número de Habitaciones:</label>
+            <div class="col-sm-4">
+                <input type="number" id="habitaciones" name="habitaciones" class="form-control">
+            </div>
+            <label for="tienePiscina" class="col-sm-2 control-label">¿Tiene Piscina?</label>
+            <div class="col-sm-4">
+                <select id="tienePiscina" name="tienePiscina" class="form-control">
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <label for="maxPersonasPorHabitacion" class="col-sm-2 control-label">Máximo de Personas por Habitación:</label>
+            <div class="col-sm-4">
+                <input type="number" id="maxPersonasPorHabitacion" name="maxPersonasPorHabitacion" class="form-control">
+            </div>
+            <label for="precioMinimo" class="col-sm-2 control-label">Precio Mínimo por Noche:</label>
+            <div class="col-sm-4">
+                <input type="number" id="precioMinimo" name="precioMinimo" class="form-control">
+            </div>
+            <label for="precioMaximo" class="col-sm-2 control-label">Precio Máximo por Noche:</label>
+            <div class="col-sm-4">
+                <input type="number" id="precioMaximo" name="precioMaximo" class="form-control">
+            </div>
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+            </div>
+        </div>
+    </form>
+
+    <h2>Resultados:</h2>
+    <div th:each="inmueble : ${inmuebles}" class="inmueble-card">
+        <div class="inmueble-img" th:style="'background-image:url(' + ${inmueble.imagenUrl} + ');'"></div>
+        <h3 th:text="${inmueble.nombre}">Nombre del Inmueble</h3>
+        <p th:text="${'Precio por noche: €' + inmueble.precioPorNoche}">Precio por Noche</p>
+        <p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
