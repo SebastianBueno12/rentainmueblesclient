@@ -1,5 +1,7 @@
 package co.ucentral.rentainmueblesclientes.controladores;
 
+import co.ucentral.rentainmueblesclientes.controlador.BusquedaInmuebleControlador;
+import co.ucentral.rentainmueblesclientes.repositorio.BusquedaInmuebleRepositorio;
 import co.ucentral.rentainmueblesclientes.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
