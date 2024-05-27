@@ -31,7 +31,35 @@ public class BusquedaInmuebleControlador {
             @RequestParam(required = false) Integer numPersonas,
             Model model) {
         try {
-            List<BusquedaInmueble> busquedaInmuebles = servicio.buscarInmuebles(ciudad, fechaLlegada, fechaSalida, numPersonas);
+            List<BusquedaInmueble> busquedaInmuebles = servicio.buscarInmuebles(ciudad, fechaLlegada, fechaSalida, numPersonas, null, null, null, null);
+            if (busquedaInmuebles.isEmpty()) {
+                model.addAttribute("message", "No se encontraron inmuebles que coincidan con los criterios de búsqueda.");
+            } else {
+                model.addAttribute("inmuebles", busquedaInmuebles);
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al procesar la búsqueda de inmuebles", e);
+        }
+        return "buscar-inmuebles";
+    }
+
+    @GetMapping("/filtrar")
+    public String filtrarInmuebles(
+            @RequestParam String ciudad,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaLlegada,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaSalida,
+            @RequestParam(required = false) Integer numPersonas,
+            @RequestParam(required = false) String zona,
+            @RequestParam(required = false) String tienePiscina,
+            @RequestParam(required = false) Double precioMinimo,
+            @RequestParam(required = false) Double precioMaximo,
+            Model model) {
+        try {
+            Boolean tienePiscinaBool = null;
+            if (tienePiscina != null && !tienePiscina.isEmpty()) {
+                tienePiscinaBool = Boolean.parseBoolean(tienePiscina);
+            }
+            List<BusquedaInmueble> busquedaInmuebles = servicio.buscarInmuebles(ciudad, fechaLlegada, fechaSalida, numPersonas, zona, tienePiscinaBool, precioMinimo, precioMaximo);
             if (busquedaInmuebles.isEmpty()) {
                 model.addAttribute("message", "No se encontraron inmuebles que coincidan con los criterios de búsqueda.");
             } else {

@@ -4,33 +4,103 @@
     <meta charset="UTF-8">
     <title>Detalle del Inmueble</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #343a40;
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .header a {
+            text-decoration: none;
+            color: white;
+            font-size: 20px;
+            margin-left: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+        .header a:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            margin-top: 70px;
+            padding: 20px;
+        }
         .info-section {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 20px;
         }
+        .info-section h2 {
+            margin-top: 0;
+        }
+        .inmueble-img {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background-color: #f2f2f2;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .info-section p {
+            margin: 10px 0;
+        }
     </style>
+    <script>
+        function formatCurrency(value) {
+            return '$' + parseInt(value).toLocaleString('es-CO');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            var priceElement = document.getElementById('precioPorNoche');
+            var priceValue = priceElement.getAttribute('data-value');
+            priceElement.innerText = 'Precio por noche: ' + formatCurrency(priceValue);
+        });
+    </script>
 </head>
 <body>
-<h1>Detalle del Inmueble</h1>
-<!-- Sección principal que muestra información detallada del inmueble seleccionado -->
-<div class="info-section">
-    <!-- Muestra el nombre del inmueble -->
-    <h2 th:text="${inmueble.nombre}">Nombre del Inmueble</h2>
-    <!-- Imagen representativa del inmueble -->
-    <img th:src="${inmueble.imagenUrl}" alt="Imagen del Inmueble" style="width:100%; max-width:400px;">
-    <!-- Descripción detallada del inmueble -->
-    <p th:text="${inmueble.descripcion}">Descripción</p>
-    <!-- Ubicación del inmueble -->
-    <p th:text="${'Ciudad: ' + inmueble.ciudad}">Ciudad</p>
-    <p th:text="${'Zona: ' + inmueble.zona}">Zona</p>
-    <!-- Información sobre el precio y la capacidad -->
-    <p th:text="${'Precio por noche: €' + inmueble.precioPorNoche}">Precio por Noche</p>
-    <p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
-    <!-- Disponibilidad del inmueble -->
-    <p th:text="${'Disponible desde: ' + inmueble.fechaDisponibleDesde}">Fecha Disponible Desde</p>
-    <p th:text="${'Disponible hasta: ' + inmueble.fechaDisponibleHasta}">Fecha Disponible Hasta</p>
-    <!-- Condiciones adicionales como la piscina -->
-    <p th:if="${inmueble.tienePiscina}" th:text="'Cuenta con piscina'">Cuenta con piscina</p>
-    <p th:if="${!inmueble.tienePiscina}" th:text="'No tiene piscina'">No tiene piscina</p>
+<div class="header">
+    <a href="/index">Volver al Inicio</a>
+</div>
+<div class="container">
+    <h1>Detalle del Inmueble</h1>
+    <!-- Sección principal que muestra información detallada del inmueble seleccionado -->
+    <div class="info-section">
+        <!-- Muestra el nombre del inmueble -->
+        <h2 th:text="${inmueble.nombre}">Nombre del Inmueble</h2>
+        <!-- Imagen representativa del inmueble -->
+        <div class="inmueble-img" th:style="'background-image: url(' + ${inmueble.imagenUrl} + ');'"></div>
+        <!-- Descripción detallada del inmueble -->
+        <p th:text="${inmueble.descripcion}">Descripción</p>
+        <!-- Ubicación del inmueble -->
+        <p th:text="${'Ciudad: ' + inmueble.ciudad}">Ciudad</p>
+        <p th:text="${'Zona: ' + inmueble.zona}">Zona</p>
+        <!-- Información sobre el precio y la capacidad -->
+        <p id="precioPorNoche" th:attr="data-value=${inmueble.precioPorNoche}">Precio por noche</p>
+        <p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
+        <!-- Disponibilidad del inmueble -->
+        <p th:text="${'Disponible desde: ' + inmueble.fechaDisponibleDesde}">Fecha Disponible Desde</p>
+        <p th:text="${'Disponible hasta: ' + inmueble.fechaDisponibleHasta}">Fecha Disponible Hasta</p>
+        <!-- Condiciones adicionales como la piscina -->
+        <p th:if="${inmueble.tienePiscina}" th:text="'Cuenta con piscina'">Cuenta con piscina</p>
+        <p th:if="${!inmueble.tienePiscina}" th:text="'No tiene piscina'">No tiene piscina</p>
+    </div>
 </div>
 </body>
 </html>
