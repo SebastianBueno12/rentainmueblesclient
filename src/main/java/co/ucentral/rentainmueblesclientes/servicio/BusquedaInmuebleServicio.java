@@ -16,7 +16,11 @@ public class BusquedaInmuebleServicio {
 
     public List<BusquedaInmueble> buscarInmuebles(String ciudad, LocalDate fechaLlegada, LocalDate fechaSalida, Integer numPersonas,
                                                   String zona, Boolean tienePiscina, Double precioMinimo, Double precioMaximo) {
-        return repositorio.findByCriterios(ciudad, zona, fechaLlegada, fechaSalida, numPersonas, tienePiscina, precioMinimo, precioMaximo);
+        try {
+            return repositorio.findByCriterios(ciudad, zona, fechaLlegada, fechaSalida, numPersonas, tienePiscina, precioMinimo, precioMaximo);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al convertir las fechas", e);
+        }
     }
 
     public BusquedaInmueble obtenerDetalleInmueble(Long id) {

@@ -12,8 +12,8 @@ public interface BusquedaInmuebleRepositorio extends CrudRepository<BusquedaInmu
 
     @Query("SELECT i FROM BusquedaInmueble i WHERE i.ciudad = :ciudad AND " +
             "(:zona IS NULL OR :zona = '' OR i.zona = :zona) AND " +
-            "(:fechaLlegada IS NULL OR i.fechaDisponibleDesde <= :fechaLlegada) AND " +
-            "(:fechaSalida IS NULL OR i.fechaDisponibleHasta >= :fechaSalida) AND " +
+            "(cast(:fechaLlegada as date) IS NULL OR i.fechaDisponibleDesde <= :fechaLlegada) AND " +
+            "(cast(:fechaSalida as date) IS NULL OR i.fechaDisponibleHasta >= :fechaSalida) AND " +
             "(:numPersonas IS NULL OR i.maxPersonas >= :numPersonas) AND " +
             "(:tienePiscina IS NULL OR i.tienePiscina = :tienePiscina) AND " +
             "(:precioMinimo IS NULL OR i.precioPorNoche >= :precioMinimo) AND " +
