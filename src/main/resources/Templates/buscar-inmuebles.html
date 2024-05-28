@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Buscar Inmuebles</title>
@@ -167,7 +167,7 @@
         <h3 th:text="${inmueble.nombre}">Nombre del Inmueble</h3>
         <p class="precioPorNoche" th:attr="data-value=${inmueble.precioPorNoche}">Precio por noche</p>
         <p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
-        <a th:href="@{/api/inmuebles/detalle/{id}(id=${inmueble.id})}" class="btn btn-primary">Ver Detalles</a>
+        <a th:href="@{/api/inmuebles/detalle/{id}(id=${inmueble.id}, idUsuario=${session.idUsuario})}" class="btn btn-primary">Ver Detalles</a>
     </div>
 </div>
 </body>

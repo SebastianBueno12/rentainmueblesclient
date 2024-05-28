@@ -90,29 +90,17 @@
     <a href="/index">Volver al Inicio</a>
 </div>
 <div class="container">
-    <h1>Detalle del Inmueble</h1>
-    <!-- Sección principal que muestra información detallada del inmueble seleccionado -->
-    <div class="info-section">
-        <!-- Muestra el nombre del inmueble -->
+    <div class="inmueble-detail">
+        <div class="inmueble-img" th:style="'background-image:url(' + ${inmueble.imagenUrl} + ');'"></div>
         <h2 th:text="${inmueble.nombre}">Nombre del Inmueble</h2>
-        <!-- Imagen representativa del inmueble -->
-        <div class="inmueble-img" th:style="'background-image: url(' + ${inmueble.imagenUrl} + ');'"></div>
-        <!-- Descripción detallada del inmueble -->
-        <p th:text="${inmueble.descripcion}">Descripción</p>
-        <!-- Ubicación del inmueble -->
-        <p th:text="${'Ciudad: ' + inmueble.ciudad}">Ciudad</p>
-        <p th:text="${'Zona: ' + inmueble.zona}">Zona</p>
-        <!-- Información sobre el precio y la capacidad -->
-        <p id="precioPorNoche" th:attr="data-value=${inmueble.precioPorNoche}">Precio por noche</p>
-        <p th:text="${'Máximo de personas: ' + inmueble.maxPersonas}">Máximo de Personas</p>
-        <!-- Disponibilidad del inmueble -->
-        <p th:text="${'Disponible desde: ' + inmueble.fechaDisponibleDesde}">Fecha Disponible Desde</p>
-        <p th:text="${'Disponible hasta: ' + inmueble.fechaDisponibleHasta}">Fecha Disponible Hasta</p>
-        <!-- Condiciones adicionales como la piscina -->
-        <p th:if="${inmueble.tienePiscina}" th:text="'Cuenta con piscina'">Cuenta con piscina</p>
-        <p th:if="${!inmueble.tienePiscina}" th:text="'No tiene piscina'">No tiene piscina</p>
-        <!-- Botón para realizar la reserva -->
-        <a th:href="@{/reservas/crear(idInmueble=${inmueble.id})}" class="btn-primary">Realizar Reserva</a>
+        <div class="detail-section">
+            <p th:text="${inmueble.descripcion}">Descripción del Inmueble</p>
+            <p>Precio por noche: <span th:text="${inmueble.precioPorNoche}"></span></p>
+            <p>Capacidad máxima: <span th:text="${inmueble.maxPersonas}"></span> personas</p>
+            <p>Disponible desde: <span th:text="${inmueble.fechaDisponibleDesde}"></span></p>
+            <p>Disponible hasta: <span th:text="${inmueble.fechaDisponibleHasta}"></span></p>
+            <a th:href="@{/reservas/crear(idInmueble=${inmueble.id}, idUsuario=${session.idUsuario})}" class="btn btn-primary">Reservar</a>
+        </div>
     </div>
 </div>
 </body>

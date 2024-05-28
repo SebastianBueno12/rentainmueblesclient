@@ -28,7 +28,8 @@ public class RegistroControlador {
     public String procesarInicioSesion(@RequestParam("username") String correo, @RequestParam("password") String clave, HttpSession session) {
         Usuario usuario = usuarioServicio.encontrarPorCorreo(correo);
         if (usuario != null && usuario.getClave().equals(clave)) {
-            session.setAttribute("usuario", usuario);
+            session.setAttribute("idUsuario", usuario.getId());
+            session.setAttribute("usuario", usuario); // Adicionalmente almacenar el objeto usuario
             return "redirect:/index";
         } else {
             return "redirect:/inicioSesion?error";
@@ -37,7 +38,7 @@ public class RegistroControlador {
 
     @GetMapping("/index")
     public String mostrarIndex(HttpSession session) {
-        if (session.getAttribute("usuario") == null) {
+        if (session.getAttribute("idUsuario") == null) {
             return "redirect:/inicioSesion";
         }
         return "index";
