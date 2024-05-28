@@ -16,6 +16,6 @@ public class PoliticasCancelacionControlador {
     public String mostrarPoliticas(Model model) {
         String politicas = politicasCancelacionServicio.obtenerPoliticas();
         model.addAttribute("politicasCancelacion", politicas);
-        return "politicas-cancelacion";
+        return "index"; // Carga el index para que el modal pueda ser mostrado allí
     }
 }
