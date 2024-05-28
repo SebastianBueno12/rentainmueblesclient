@@ -6,6 +6,7 @@ import co.ucentral.rentainmueblesclientes.modelo.Usuario;
 import co.ucentral.rentainmueblesclientes.servicio.ReservaServicio;
 import co.ucentral.rentainmueblesclientes.servicio.BusquedaInmuebleServicio;
 import co.ucentral.rentainmueblesclientes.servicio.UsuarioServicio;
+import co.ucentral.rentainmueblesclientes.servicio.PoliticasCancelacionServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ public class ReservaControlador {
     @Autowired
     private UsuarioServicio usuarioServicio;
 
+    @Autowired
+    private PoliticasCancelacionServicio politicasCancelacionServicio;
+
     @GetMapping("/crear")
     public String mostrarFormularioDeCreacion(@RequestParam("idInmueble") Long idInmueble, HttpSession session, Model model) {
         Long idUsuario = (Long) session.getAttribute("idUsuario");
@@ -46,14 +50,21 @@ public class ReservaControlador {
             return "redirect:/"; // Redirecciona al inicio si el inmueble o el usuario no existen
         }
 
+        String politicas = politicasCancelacionServicio.obtenerPoliticas();
+
         model.addAttribute("inmueble", inmueble);
         model.addAttribute("usuario", usuario);
         model.addAttribute("reserva", new Reserva()); // Crea una nueva instancia de reserva para ser llenada en el formulario
+        model.addAttribute("politicasCancelacion", politicas);
         return "crear-reserva"; // Retorna la vista del formulario de creación de reservas
     }
 
     @PostMapping("/crear")
-    public String crearReserva(Reserva reserva, @RequestParam("idInmueble") Long idInmueble, HttpSession session, Model model) {
+    public String crearReserva(Reserva reserva,
+                               @RequestParam("idInmueble") Long idInmueble,
+                               @RequestParam(value = "aceptarPoliticas", required = false) boolean aceptarPoliticas,
+                               HttpSession session,
+                               Model model) {
         Long idUsuario = (Long) session.getAttribute("idUsuario");
         if (idUsuario == null) {
             return "redirect:/inicioSesion";
@@ -69,6 +80,14 @@ public class ReservaControlador {
 
         if (usuario == null) {
             model.addAttribute("error", "El usuario no se encontró.");
+            return "crear-reserva";
+        }
+
+        if (!aceptarPoliticas) {
+            model.addAttribute("error", "Debe aceptar las políticas de cancelación para continuar.");
+            model.addAttribute("inmueble", inmueble);
+            model.addAttribute("reserva", reserva);
+            model.addAttribute("politicasCancelacion", politicasCancelacionServicio.obtenerPoliticas());
             return "crear-reserva";
         }
 

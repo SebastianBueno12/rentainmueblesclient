@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Reservas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/index">Mika Za</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/cerrarSesion">Cerrar Sesión</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-5">
+    <h1>Mis Reservas</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Inmueble</th>
+                <th>Fecha de Llegada</th>
+                <th>Fecha de Salida</th>
+                <th>Costo Total</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reserva : ${reservas}">
+                <td th:text="${reserva.inmueble.nombre}">Nombre del Inmueble</td>
+                <td th:text="${reserva.fechaLlegada}">Fecha de Llegada</td>
+                <td th:text="${reserva.fechaSalida}">Fecha de Salida</td>
+                <td th:text="${reserva.costoTotal}">Costo Total</td>
+                <td th:text="${reserva.estadoReserva}">Estado</td>
+                <td>
+                    <a th:href="@{/usuario/reservas/cancelar(id=${reserva.id})}" class="btn btn-danger">Cancelar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

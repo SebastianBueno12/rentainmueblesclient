@@ -87,7 +87,7 @@ public class PagoControlador {
                 "Gracias por reservar con nosotros.";
         correoServicio.enviarCorreo(reserva.getUsuario().getCorreo(), asunto, mensaje);
 
-        model.addAttribute("reserva", reserva);
-        return "detalle-reserva"; // Retorna la vista de detalle de la reserva, mostrando confirmación y datos de la reserva
+        // Redirigir al índice después de pago exitoso y envío de correo
+        return "redirect:/index";
     }
 }
