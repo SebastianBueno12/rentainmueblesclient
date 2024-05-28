@@ -6,9 +6,11 @@ import java.time.LocalDate;
 
 /**
  * Clase que representa un inmueble disponible para alquiler.
- * Se utiliza para la realización de reservas (CU02),
- * donde se requiere acceso a detalles completos del inmueble para verificar disponibilidad, calcular costos,
- * y proporcionar información detallada a los usuarios.
+ *
+ * Esta clase es utilizada en:
+ * - CU01: Búsqueda de inmuebles, proporcionando detalles necesarios para que los usuarios puedan filtrar y visualizar las opciones disponibles.
+ * - CU02: Realización de reservas, donde se requiere acceso a detalles completos del inmueble para verificar disponibilidad, calcular costos,
+ *   y proporcionar información detallada a los usuarios.
  */
 @Data
 @Entity
@@ -52,5 +54,4 @@ public class BusquedaInmueble {
 
     @Column(nullable = false)
     private String imagenUrl; // Imagen representativa del inmueble.
-
 }
