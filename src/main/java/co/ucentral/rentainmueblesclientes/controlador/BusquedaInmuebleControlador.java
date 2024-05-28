@@ -1,4 +1,5 @@
 package co.ucentral.rentainmueblesclientes.controlador;
+
 import java.time.LocalDate;
 import java.util.List;
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import jakarta.servlet.http.HttpSession;
+
 import co.ucentral.rentainmueblesclientes.modelo.BusquedaInmueble;
 import co.ucentral.rentainmueblesclientes.servicio.BusquedaInmuebleServicio;
 
@@ -31,7 +34,8 @@ public class BusquedaInmuebleControlador {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaLlegada,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaSalida,
             @RequestParam(required = false) Integer numPersonas,
-            Model model) {
+            Model model,
+            HttpSession session) {
         try {
             logger.info("Recibida solicitud de búsqueda: ciudad={}, fechaLlegada={}, fechaSalida={}, numPersonas={}",
                     ciudad, fechaLlegada, fechaSalida, numPersonas);
@@ -41,6 +45,7 @@ public class BusquedaInmuebleControlador {
                 model.addAttribute("message", "No se encontraron inmuebles que coincidan con los criterios de búsqueda.");
             } else {
                 model.addAttribute("inmuebles", busquedaInmuebles);
+                model.addAttribute("idUsuario", session.getAttribute("idUsuario"));
             }
         } catch (Exception e) {
             logger.error("Error al procesar la búsqueda de inmuebles", e);
@@ -59,7 +64,8 @@ public class BusquedaInmuebleControlador {
             @RequestParam(required = false) String tienePiscina,
             @RequestParam(required = false) Double precioMinimo,
             @RequestParam(required = false) Double precioMaximo,
-            Model model) {
+            Model model,
+            HttpSession session) {
         try {
             logger.info("Recibida solicitud de filtro: ciudad={}, fechaLlegada={}, fechaSalida={}, numPersonas={}, zona={}, tienePiscina={}, precioMinimo={}, precioMaximo={}",
                     ciudad, fechaLlegada, fechaSalida, numPersonas, zona, tienePiscina, precioMinimo, precioMaximo);
@@ -73,6 +79,7 @@ public class BusquedaInmuebleControlador {
                 model.addAttribute("message", "No se encontraron inmuebles que coincidan con los criterios de búsqueda.");
             } else {
                 model.addAttribute("inmuebles", busquedaInmuebles);
+                model.addAttribute("idUsuario", session.getAttribute("idUsuario"));
             }
         } catch (Exception e) {
             logger.error("Error al procesar el filtrado de inmuebles", e);
@@ -82,9 +89,9 @@ public class BusquedaInmuebleControlador {
     }
 
     @GetMapping("/detalle/{id}")
-    public String verDetalleInmueble(@PathVariable Long id, Model model) {
+    public String verDetalleInmueble(@PathVariable Long id, @RequestParam("idUsuario") Long idUsuario, Model model) {
         try {
-            logger.info("Recibida solicitud de detalle para el inmueble con id={}", id);
+            logger.info("Recibida solicitud de detalle para el inmueble con id={} y usuario id={}", id, idUsuario);
 
             BusquedaInmueble inmueble = servicio.obtenerDetalleInmueble(id);
             if (inmueble == null) {
@@ -92,10 +99,31 @@ public class BusquedaInmuebleControlador {
                 return "error";
             }
             model.addAttribute("inmueble", inmueble);
+            model.addAttribute("idUsuario", idUsuario); // Añadir idUsuario al modelo
         } catch (Exception e) {
             logger.error("Error al obtener el detalle del inmueble", e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Inmueble no encontrado", e);
         }
         return "detalle-inmueble";
     }
+
+    @GetMapping("/reservar/{id}")
+    public String realizarReserva(@PathVariable Long id, @RequestParam("idUsuario") Long idUsuario, Model model) {
+        try {
+            logger.info("Recibida solicitud de reserva para el inmueble con id={} y usuario id={}", id, idUsuario);
+
+            BusquedaInmueble inmueble = servicio.obtenerDetalleInmueble(id);
+            if (inmueble == null) {
+                model.addAttribute("message", "El inmueble solicitado no está disponible.");
+                return "error";
+            }
+            model.addAttribute("inmueble", inmueble);
+            model.addAttribute("idUsuario", idUsuario); // Añadir idUsuario al modelo
+            return "crear-reserva";
+        } catch (Exception e) {
+            logger.error("Error al obtener el detalle del inmueble para reserva", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al procesar la solicitud de reserva", e);
+        }
+    }
+
 }
