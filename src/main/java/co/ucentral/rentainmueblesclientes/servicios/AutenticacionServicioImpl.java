@@ -1,7 +1,7 @@
-package co.ucentral.rentainmueblesclientes.servicios;
+package co.ucentral.rentainmueblesclientes.servicio;
 
 import co.ucentral.rentainmueblesclientes.modelo.Usuario;
-import co.ucentral.rentainmueblesclientes.repositorios.UsuarioRepositorio;
+import co.ucentral.rentainmueblesclientes.repositorio.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +24,3 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
         return false;
     }
 }
-
