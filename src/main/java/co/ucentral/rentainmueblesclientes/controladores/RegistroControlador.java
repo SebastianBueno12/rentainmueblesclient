@@ -1,7 +1,7 @@
-package co.ucentral.rentainmueblesclientes.controladores;
+package co.ucentral.rentainmueblesclientes.controlador;
 
 import co.ucentral.rentainmueblesclientes.modelo.Usuario;
-import co.ucentral.rentainmueblesclientes.servicios.UsuarioServicio;
+import co.ucentral.rentainmueblesclientes.servicio.UsuarioServicio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,8 @@ public class RegistroControlador {
     public String procesarInicioSesion(@RequestParam("username") String correo, @RequestParam("password") String clave, HttpSession session) {
         Usuario usuario = usuarioServicio.encontrarPorCorreo(correo);
         if (usuario != null && usuario.getClave().equals(clave)) {
-            session.setAttribute("usuario", usuario);
+            session.setAttribute("idUsuario", usuario.getId());
+            session.setAttribute("usuario", usuario); // Adicionalmente almacenar el objeto usuario
             return "redirect:/index";
         } else {
             return "redirect:/inicioSesion?error";
@@ -37,7 +38,7 @@ public class RegistroControlador {
 
     @GetMapping("/index")
     public String mostrarIndex(HttpSession session) {
-        if (session.getAttribute("usuario") == null) {
+        if (session.getAttribute("idUsuario") == null) {
             return "redirect:/inicioSesion";
         }
         return "index";
