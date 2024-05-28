@@ -1,4 +1,4 @@
-package co.ucentral.rentainmueblesclientes.servicios;
+package co.ucentral.rentainmueblesclientes.servicio;
 
 
 import co.ucentral.rentainmueblesclientes.Dto.UsuarioRegistroDTO;

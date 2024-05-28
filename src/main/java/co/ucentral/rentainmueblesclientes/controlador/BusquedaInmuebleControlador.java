@@ -1,4 +1,5 @@
 package co.ucentral.rentainmueblesclientes.controlador;
+
 import java.time.LocalDate;
 import java.util.List;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+
 import co.ucentral.rentainmueblesclientes.modelo.BusquedaInmueble;
 import co.ucentral.rentainmueblesclientes.servicio.BusquedaInmuebleServicio;
 
@@ -97,5 +99,24 @@ public class BusquedaInmuebleControlador {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Inmueble no encontrado", e);
         }
         return "detalle-inmueble";
+    }
+
+    // Nuevo método para redirigir a la vista de creación de reserva
+    @GetMapping("/reservar/{id}")
+    public String realizarReserva(@PathVariable Long id, Model model) {
+        try {
+            logger.info("Recibida solicitud de reserva para el inmueble con id={}", id);
+
+            BusquedaInmueble inmueble = servicio.obtenerDetalleInmueble(id);
+            if (inmueble == null) {
+                model.addAttribute("message", "El inmueble solicitado no está disponible.");
+                return "error";
+            }
+            model.addAttribute("inmueble", inmueble);
+            return "crear-reserva";
+        } catch (Exception e) {
+            logger.error("Error al obtener el detalle del inmueble para reserva", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al procesar la solicitud de reserva", e);
+        }
     }
 }

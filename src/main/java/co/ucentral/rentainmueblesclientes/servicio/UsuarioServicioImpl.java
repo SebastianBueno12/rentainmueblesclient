@@ -1,9 +1,9 @@
-package co.ucentral.rentainmueblesclientes.servicios;
+package co.ucentral.rentainmueblesclientes.servicio;
 
 
 import co.ucentral.rentainmueblesclientes.Dto.UsuarioRegistroDTO;
 import co.ucentral.rentainmueblesclientes.modelo.Usuario;
-import co.ucentral.rentainmueblesclientes.repositorios.UsuarioRepositorio;
+import co.ucentral.rentainmueblesclientes.repositorio.UsuarioRepositorio;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;

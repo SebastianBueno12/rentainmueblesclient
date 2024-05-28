@@ -1,8 +1,6 @@
-package co.ucentral.rentainmueblesclientes.controladores;
+package co.ucentral.rentainmueblesclientes.controlador;
 
-import co.ucentral.rentainmueblesclientes.controlador.BusquedaInmuebleControlador;
-import co.ucentral.rentainmueblesclientes.repositorio.BusquedaInmuebleRepositorio;
-import co.ucentral.rentainmueblesclientes.servicios.UsuarioServicio;
+import co.ucentral.rentainmueblesclientes.servicio.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

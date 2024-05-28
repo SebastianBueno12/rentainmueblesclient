@@ -1,7 +1,7 @@
-package co.ucentral.rentainmueblesclientes.controladores;
+package co.ucentral.rentainmueblesclientes.controlador;
 
 import co.ucentral.rentainmueblesclientes.modelo.Usuario;
-import co.ucentral.rentainmueblesclientes.servicios.UsuarioServicio;
+import co.ucentral.rentainmueblesclientes.servicio.UsuarioServicio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
