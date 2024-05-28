@@ -1,4 +1,4 @@
-package co.ucentral.rentainmueblesclientes.repositorios;
+package co.ucentral.rentainmueblesclientes.repositorio;
 
 
 
