@@ -7,14 +7,21 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/index">Mika Za</a>
+    <a class="navbar-brand" href="#">Mika Za</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/cerrarSesion">Cerrar Sesión</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="https://cdn-icons-png.freepik.com/512/1077/1077063.png" alt="User Icon" style="width: 30px; height: 30px;">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/cerrarSesion">Cerrar Sesión</a>
+                    <a class="dropdown-item" href="#" id="politicasBtn">Política de Cancelación</a>
+                    <a class="dropdown-item" href="/usuario/reservas">Administrar Reservas</a>
+                </div>
             </li>
         </ul>
     </div>
@@ -25,27 +32,26 @@
         <table class="table table-striped">
             <thead>
             <tr>
+                <th>ID</th>
                 <th>Inmueble</th>
                 <th>Fecha de Llegada</th>
                 <th>Fecha de Salida</th>
-                <th>Costo Total</th>
                 <th>Estado</th>
-                <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="reserva : ${reservas}">
-                <td th:text="${reserva.inmueble.nombre}">Nombre del Inmueble</td>
+                <td th:text="${reserva.idReserva}">ID</td>
+                <td th:text="${reserva.inmueble.nombre}">Inmueble</td>
                 <td th:text="${reserva.fechaLlegada}">Fecha de Llegada</td>
                 <td th:text="${reserva.fechaSalida}">Fecha de Salida</td>
-                <td th:text="${reserva.costoTotal}">Costo Total</td>
                 <td th:text="${reserva.estadoReserva}">Estado</td>
-                <td>
-                    <a th:href="@{/usuario/reservas/cancelar(id=${reserva.id})}" class="btn btn-danger">Cancelar</a>
-                </td>
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="text-center mt-4">
+        <a href="/index" class="btn btn-primary">Volver al Inicio</a>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
