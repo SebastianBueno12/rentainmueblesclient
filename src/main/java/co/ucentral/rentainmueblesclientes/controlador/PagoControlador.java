@@ -58,11 +58,18 @@ public class PagoControlador {
             return "pago"; // Retorna la vista 'pago.html' con un mensaje de error
         }
 
+        // Verifica que el objeto Usuario no sea nulo
+        if (reserva.getUsuario() == null) {
+            model.addAttribute("error", "La reserva no tiene un usuario asociado.");
+            return "pago"; // Retorna la vista 'pago.html' con un mensaje de error
+        }
+
         // Llamada al servicio de pago para procesar el pago seguro
         boolean pagoExitoso = pagoSeguroServicio.procesarPagoSeguroPSE(nombreTarjeta, numeroTarjeta, fechaExpiracion, codigoSeguridad, reserva.getCostoTotal());
 
         if (!pagoExitoso) {
             model.addAttribute("error", "El pago no se pudo realizar. Por favor, inténtelo de nuevo.");
+            model.addAttribute("reserva", reserva); // Asegúrate de que la reserva se agrega al modelo de nuevo
             return "pago"; // Retorna la vista 'pago.html' con un mensaje de error
         }
 
@@ -80,7 +87,7 @@ public class PagoControlador {
                 "Gracias por reservar con nosotros.";
         correoServicio.enviarCorreo(reserva.getUsuario().getCorreo(), asunto, mensaje);
 
-        model.addAttribute("reserva", reserva);
-        return "detalle-reserva"; // Retorna la vista de detalle de la reserva, mostrando confirmación y datos de la reserva
+        // Redirigir al índice después de pago exitoso y envío de correo
+        return "redirect:/index";
     }
 }
