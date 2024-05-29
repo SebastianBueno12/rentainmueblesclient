@@ -37,6 +37,7 @@
                 <th>Fecha de Llegada</th>
                 <th>Fecha de Salida</th>
                 <th>Estado</th>
+                <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -46,16 +47,60 @@
                 <td th:text="${reserva.fechaLlegada}">Fecha de Llegada</td>
                 <td th:text="${reserva.fechaSalida}">Fecha de Salida</td>
                 <td th:text="${reserva.estadoReserva}">Estado</td>
+                <td>
+                    <button th:if="${reserva.estadoReserva != 'Cancelada'}" class="btn btn-danger" th:onclick="'cancelarReserva(' + ${reserva.idReserva} + ')'">Cancelar</button>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="text-center mt-4">
-        <a href="/index" class="btn btn-primary">Volver al Inicio</a>
+    <a href="/index" class="btn btn-primary mt-3">Volver al Inicio</a>
+</div>
+
+<!-- Modal de Políticas de Cancelación -->
+<div class="modal fade" id="politicasModal" tabindex="-1" role="dialog" aria-labelledby="politicasModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <span class="close" data-dismiss="modal">&times;</span>
+            <h5 class="modal-title" id="politicasModalLabel">Políticas de Cancelación</h5>
+            <div class="modal-body">
+                <p>Si la cancelación se realiza con más de 24 horas de antelación, se retorna el 100% del dinero;
+                    si se cancela dentro de las 24 horas, se retorna el 80%;
+                    y si se cancela en la fecha de ingreso al inmueble, se retorna el 60%.</p>
+            </div>
+        </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    function cancelarReserva(idReserva) {
+        if (confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
+            window.location.href = '/usuario/reservas/cancelar?idReserva=' + idReserva;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById('politicasModal');
+        var btn = document.getElementById('politicasBtn');
+        var span = document.getElementsByClassName('close')[0];
+
+        btn.onclick = function() {
+            $('#politicasModal').modal('show');
+        }
+
+        span.onclick = function() {
+            $('#politicasModal').modal('hide');
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                $('#politicasModal').modal('hide');
+            }
+        }
+    });
+</script>
 </body>
 </html>
