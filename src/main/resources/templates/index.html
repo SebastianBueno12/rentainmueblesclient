@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mika Za</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .modal-content {
+            padding: 20px;
+        }
+        .close {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+        }
+        .close:hover, .close:focus {
+            color: #555;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Mika Za</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="https://static.vecteezy.com/system/resources/previews/008/302/421/non_2x/eps10-white-user-icon-or-logo-in-simple-flat-trendy-modern-style-isolated-on-black-background-free-vector.jpg" alt="User Icon" style="width: 30px; height: 30px;">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/cerrarSesion">Cerrar Sesión</a>
+                    <a class="dropdown-item" href="#" id="politicasBtn">Política de Cancelación</a>
+                    <a class="dropdown-item" href="/usuario/reservas">Administrar Reservas</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-5">
+    <div class="text-center">
+        <h1>Bienvenido a Mika Za</h1>
+        <p>Encuentra los mejores inmuebles para tu estancia</p>
+        <a href="/api/inmuebles/buscar" class="btn btn-primary">Buscar Inmuebles</a>
+    </div>
+    <div class="mt-5">
+        <h3>Algunos de nuestros inmuebles destacados:</h3>
+        <div class="row">
+            <!-- Repite este bloque para cada inmueble destacado -->
+            <div th:each="inmueble : ${inmuebles}" class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img th:src="${inmueble.imagenUrl}" class="card-img-top" alt="Imagen del Inmueble">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${inmueble.nombre}">Nombre del Inmueble</h5>
+                        <p class="card-text" th:text="'Precio por Noche: ' + ${inmueble.precioPorNoche}">Precio por Noche</p>
+                        <a th:href="'/detalle/' + ${inmueble.id}" class="btn btn-primary">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin del bloque -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Políticas de Cancelación -->
+<div class="modal fade" id="politicasModal" tabindex="-1" role="dialog" aria-labelledby="politicasModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <span class="close" data-dismiss="modal">&times;</span>
+            <h5 class="modal-title" id="politicasModalLabel">Políticas de Cancelación</h5>
+            <div class="modal-body">
+                <p>Si la cancelación se realiza con más de 24 horas de antelación, se retorna el 100% del dinero;
+                    si se cancela dentro de las 24 horas, se retorna el 80%;
+                    y si se cancela en la fecha de ingreso al inmueble, se retorna el 60%.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById('politicasModal');
+        var btn = document.getElementById('politicasBtn');
+        var span = document.getElementsByClassName('close')[0];
+
+        btn.onclick = function() {
+            $('#politicasModal').modal('show');
+        }
+
+        span.onclick = function() {
+            $('#politicasModal').modal('hide');
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                $('#politicasModal').modal('hide');
+            }
+        }
+    });
+</script>
+</body>
+</html>
